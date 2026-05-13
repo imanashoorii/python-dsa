@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "003 HT Get", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Implement the <code><strong>get_item</strong></code> method for the HashTable class that retrieves the value associated with a given key from the hash table. <br><br>The method should perform the following tasks:</p><ol><li><p>Calculate the hash value of the given key by calling the private <code><strong>__hash</strong></code> method and store the result in a variable named <code><strong>index</strong></code>.</p></li><li><p>Check if the <code><strong>data_map</strong></code> list at the calculated index is not None:</p><ul><li><p>If it is not, iterate through the key-value pairs stored in the list at the calculated index in <code><strong>data_map</strong></code>:</p><ul><li><p>For each key-value pair, compare the stored key (located at position 0) with the given key.</p></li><li><p>If a match is found, return the corresponding value (located at position 1) of the key-value pair.</p></li></ul></li></ul></li><li><p>If the given key is not found in the hash table, return None.</p></li></ol>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestHashTableGetItem(TestCase):\n\n    def setUp(self):\n        import exercise\n        self.ht = exercise.HashTable()\n\n    def test_get_item_empty_table(self):\n        self.assertIsNone(self.ht.get_item(\"test\"))  # Should return None since the table is empty\n\n    def test_get_item_exists(self):\n        self.ht.set_item(\"test\", 123)\n        self.assertEqual(self.ht.get_item(\"test\"), 123)  # Should return the set value\n\n    def test_get_item_not_exists(self):\n        self.ht.set_item(\"test1\", 123)\n        self.assertIsNone(self.ht.get_item(\"test2\"))  # Key not in table\n\n    def test_get_item_collision(self):\n        import exercise\n        ht = exercise.HashTable(1)  # Ensures a collision since size is 1\n        ht.set_item(\"test1\", 123)\n        ht.set_item(\"test2\", 456)\n        self.assertEqual(ht.get_item(\"test1\"), 123)\n        self.assertEqual(ht.get_item(\"test2\"), 456)\n\n\n"}], "solutions": [{"file_name": "exercise.py", "content": "class HashTable:\n    def __init__(self, size = 7):\n        self.data_map = [None] * size\n      \n    def __hash(self, key):\n        my_hash = 0\n        for letter in key:\n            my_hash = (my_hash + ord(letter) * 23) % len(self.data_map)\n        return my_hash  \n\n    def print_table(self):\n        for i, val in enumerate(self.data_map): \n            print(i, \": \", val)\n    \n    def set_item(self, key, value):\n        index = self.__hash(key)\n        if self.data_map[index] == None:\n            self.data_map[index] = []\n        self.data_map[index].append([key, value])\n    \n    def get_item(self, key):\n        index = self.__hash(key)\n        if self.data_map[index] is not None:\n            for i in range(len(self.data_map[index])):\n                if self.data_map[index][i][0] == key:\n                    return self.data_map[index][i][1]\n        return None\n\n        \n             \n\nmy_hash_table = HashTable()\n\nmy_hash_table.set_item('bolts', 1400)\nmy_hash_table.set_item('washers', 50)\n\nprint('Bolts:', my_hash_table.get_item('bolts'))\nprint('Washers:', my_hash_table.get_item('washers'))\nprint('Lumber:', my_hash_table.get_item('lumber'))\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    Bolts: 1400\n    Washers: 50\n    Lumber: None\n\n\"\"\""}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

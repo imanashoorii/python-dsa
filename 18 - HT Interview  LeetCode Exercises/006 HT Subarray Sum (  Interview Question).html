@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "006 HT Subarray Sum (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Given an array of integers <code><strong>nums</strong></code> and a target integer <code><strong>target</strong></code>, write a Python function called <code><strong>subarray_sum</strong></code> that finds the indices of a contiguous subarray in <code><strong>nums</strong></code> that add up to the <code><strong>target</strong></code> sum using a hash table (<em>dictionary</em>).<br><br>Your function should take two arguments:</p><ul><li><p><code><strong>nums</strong></code>: a list of integers representing the input array</p></li><li><p><code><strong>target</strong></code>: an integer representing the target sum</p></li></ul><p><br>Your function should return a list of two integers representing the starting and ending indices of the subarray that adds up to the target sum. If there is no such subarray, your function should return an empty list.<br><br>For example:</p><p><br></p><pre class=\"prettyprint linenums\">nums = [1, 2, 3, 4, 5]\ntarget = 9\nprint(subarray_sum(nums, target))  # should print [1, 3]</pre><p><br></p><p>Note that there may be multiple subarrays that add up to the target sum, but your function only needs to return the indices of any one such subarray. Also, the input list may contain both positive and negative integers.</p><p><br></p><p><br></p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-09_22-38-39-912fb644f27ca2ef21a7041ebcac41f0.png\">", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestSubarraySum(TestCase):\n    \n    def test_basic_case(self):\n        import exercise\n        from exercise import subarray_sum\n        result = subarray_sum([1, 2, 3, 4, 5], 9)\n        self.assertEqual(result, [1, 3])  # [2, 3, 4] sums to 9\n\n    def test_multiple_possible_subarrays(self):\n        import exercise\n        from exercise import subarray_sum\n        result = subarray_sum([1, 2, 3, 4, 5], 7)\n        self.assertEqual(result, [2, 3])  # [1, 2, 3, 4] is the first subarray that sums to 7\n\n    def test_subarray_at_end(self):\n        import exercise\n        from exercise import subarray_sum\n        result = subarray_sum([0, 1, 2, 4, 5], 9)\n        self.assertEqual(result, [3, 4])  # [4, 5] also sums to 9\n\n    def test_subarray_at_start(self):\n        import exercise\n        from exercise import subarray_sum\n        result = subarray_sum([1, 2, 3, 4, 5], 3)\n        self.assertEqual(result, [0, 1])  # [1, 2] sums to 3\n\n    def test_no_subarray_found(self):\n        import exercise\n        from exercise import subarray_sum\n        result = subarray_sum([1, 2, 3, 4, 5], 20)\n        self.assertEqual(result, [])\n\n    def test_negative_numbers(self):\n        import exercise\n        from exercise import subarray_sum\n        result = subarray_sum([-1, 2, 3, -2, 5], 7)\n        self.assertEqual(result, [0, 4])  # [2, 3, -2, 5] sums to 7\n\n    def test_single_element_match(self):\n        import exercise\n        from exercise import subarray_sum\n        result = subarray_sum([1, 2, 3, 7, 5], 7)\n        self.assertEqual(result, [3, 3])  # Just [7] sums to 7\n"}], "solutions": [{"file_name": "exercise.py", "content": "def subarray_sum(nums, target):\n    sum_index = {0: -1}\n    current_sum = 0\n    for i, num in enumerate(nums):\n        current_sum += num\n        if current_sum - target in sum_index:\n            return [sum_index[current_sum - target] + 1, i]\n        sum_index[current_sum] = i\n    return []\n    \n    \n    \nnums = [1, 2, 3, 4, 5]\ntarget = 9\nprint ( subarray_sum(nums, target) )\n\nnums = [-1, 2, 3, -4, 5]\ntarget = 0\nprint ( subarray_sum(nums, target) )\n\nnums = [2, 3, 4, 5, 6]\ntarget = 3\nprint ( subarray_sum(nums, target) )\n\nnums = []\ntarget = 0\nprint ( subarray_sum(nums, target) )\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    [1, 3]\n    [0, 3]\n    [1, 1]\n    []\n\n\"\"\"\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

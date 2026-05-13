@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "007 LL Binary to Decimal (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Your task is to implement the <code><strong>binary_to_decimal</strong></code> method for the LinkedList class. This method should convert a binary number, represented as a linked list, to its decimal equivalent.</p><p>In this context, a binary number is a sequence of 0s and 1s. The LinkedList class represents this binary number such that each node in the linked list contains a single digit (0 or 1) of the binary number, and the whole number is formed by traversing the linked list from the head to the end.<br><br>The <code><strong>binary_to_decimal</strong></code> method should start from the head of the linked list and use each node's value to calculate the corresponding decimal number. The formula to convert a binary number to decimal is as follows:<br><br>To put it in simple terms, each digit of the binary number is multiplied by 2 raised to the power equivalent to the position of the digit, counting from right to left starting from 0, and all the results are summed together to get the decimal number.<br><br>The <code><strong>binary_to_decimal</strong></code> method should return this calculated decimal number.</p><p><br></p><p><strong>Examples</strong></p><p>Consider the binary number 101. If this number is represented as a linked list, the head of the linked list will contain the digit 1, the next node will contain 0, and the last node will contain 1. When we apply the <code><strong>binary_to_decimal</strong></code> method on this linked list, the method should return the number 5, which is the decimal equivalent of binary 101.<br><br>Similarly, for a linked list representing the binary number 1101, the <code><strong>binary_to_decimal</strong></code> method should return the number 13.<br><br>Here's how you can create these linked lists and call the <code><strong>binary_to_decimal</strong></code> method:</p><pre class=\"prettyprint linenums\"># Create a linked list for binary number 101\nlinked_list = LinkedList(1)\nlinked_list.append(0)\nlinked_list.append(1)\n\n# Convert binary to decimal\nprint(linked_list.binary_to_decimal())  # Output: 5\n\n# Create a linked list for binary number 1101\nlinked_list = LinkedList(1)\nlinked_list.append(1)\nlinked_list.append(0)\nlinked_list.append(1)\n\n# Convert binary to decimal\nprint(linked_list.binary_to_decimal())  # Output: 13</pre><p><br></p><p><br></p><p><br></p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-07-25_17-53-33-0b9770c6ae7ae038acede50037bba19a.png\"><p><br></p><p><br></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestBinaryToDecimal(TestCase):\n\n    def setUp(self):\n        import exercise\n        self.ll = exercise.LinkedList(1)\n\n    def test_binary_to_decimal(self):\n        import exercise\n        for i in [0, 1, 1, 0]:\n            self.ll.append(i)\n        # LinkedList is 1 -> 0 -> 1 -> 1 -> 0, which is the binary number 10110\n        decimal_value = self.ll.binary_to_decimal()\n        self.assertEqual(decimal_value, 22, \"Binary number 10110 should convert to 22 in decimal!\")\n\n    def test_empty_list(self):\n        import exercise\n        self.ll.head = None\n        self.ll.length = 0\n        decimal_value = self.ll.binary_to_decimal()\n        self.assertEqual(decimal_value, 0, \"An empty list should return 0!\")\n\n    def test_single_digit(self):\n        import exercise\n        self.ll = exercise.LinkedList(1)\n        decimal_value = self.ll.binary_to_decimal()\n        self.assertEqual(decimal_value, 1, \"Single digit binary 1 should return 1 in decimal!\")\n\n    def test_all_zeros(self):\n        import exercise\n        self.ll = exercise.LinkedList(0)\n        for _ in range(4):\n            self.ll.append(0)\n        # LinkedList is 0 -> 0 -> 0 -> 0 -> 0\n        decimal_value = self.ll.binary_to_decimal()\n        self.assertEqual(decimal_value, 0, \"Binary number 00000 should convert to 0 in decimal!\")\n"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \nclass LinkedList:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.head = new_node\n        self.length = 1\n\n    def append(self, value):\n        new_node = Node(value)\n        if self.length == 0:\n            self.head = new_node\n        else:\n            current = self.head\n            while current.next is not None:\n                current = current.next\n            current.next = new_node\n        self.length += 1\n    \n    def print_list(self):\n        if self.head is None:\n            print(\"empty list\")\n        else:\n            temp = self.head\n            values = []\n            while temp is not None:\n                values.append(str(temp.value))\n                temp = temp.next\n            print(\" -> \".join(values))\n\n    def binary_to_decimal(self):\n        num = 0\n        current = self.head\n        while current:\n            num = num * 2 + current.value\n            current = current.next\n        return num"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

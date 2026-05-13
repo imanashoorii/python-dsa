@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "001 Bubble Sort of LL (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p><strong>Assignment:</strong></p><p>Your task is to implement the <code><strong>bubble_sort</strong></code> method within the <code><strong>LinkedList</strong></code> class. The <code><strong>bubble_sort</strong></code> method should sort the elements of the linked list in ascending order based on their values. The sorting should be done in-place, meaning you should not create a new linked list but rather modify the existing one.</p><p><br></p><p><strong>Requirements:</strong></p><ol><li><p>The <code><strong>bubble_sort</strong></code> method should iterate through the linked list, comparing each pair of adjacent nodes and swapping their values if they are in the wrong order. This process should repeat until the entire list is sorted.</p></li><li><p>The method must handle linked lists of any length, including empty lists and lists with only one element. In cases where the list is empty or contains only one element, the method should simply return without making any changes.</p></li><li><p>You should not use any external libraries or built-in sorting functions to implement the sorting logic.</p></li><li><p>Optimize the <code><strong>bubble_sort</strong></code> method to stop early if the list becomes sorted before going through all the iterations.</p></li></ol><p><strong>Hints:</strong></p><ul><li><p>You can use a loop to iterate through the list multiple times, each time moving the largest unsorted value to its correct position in the sorted portion of the list.</p></li><li><p>To swap the values of two nodes, you can directly swap their <code><strong>value</strong></code> attributes without changing their position in the list.</p></li><li><p>Consider using a marker or a pointer to keep track of the portion of the list that is already sorted, to avoid unnecessary comparisons and swaps.</p></li></ul><p><br></p><p><strong>Input:</strong></p><p>The LinkedList object containing a linked list with unsorted elements (self).</p><p><br></p><p><strong>Output:</strong></p><p>None. The method sorts the linked list in place.</p><p><br></p><p><strong>Method Description:</strong></p><ul><li><p>If the length of the linked list is less than 2, the method returns and the list is assumed to be already sorted.</p></li><li><p>The bubble sort algorithm works by repeatedly iterating through the unsorted part of the list, comparing adjacent elements and swapping them if they are in the wrong order.</p></li><li><p>The method starts with the entire linked list being the unsorted part of the list.</p></li><li><p>For each pass through the unsorted part of the list, the method iterates through each pair of adjacent elements and swaps them if they are in the wrong order.</p></li><li><p>After each pass, the largest element in the unsorted part of the list will \"bubble up\" to the end of the list.</p></li><li><p>The method continues iterating through the unsorted part of the list until no swaps are made during a pass.</p></li><li><p>After the linked list is fully sorted, the head and tail pointers of the linked list are updated to reflect the new order of the nodes in the list.</p></li></ul><p><br></p><p><strong>Constraints:</strong></p><ul><li><p>The linked list can contain duplicates.</p></li><li><p>The method should be implemented in the LinkedList class.</p></li><li><p>The method should not use any additional data structures to sort the linked list.</p></li></ul><p><br></p><p><br></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestLinkedList(TestCase):\n\n    def list_to_values(self, linked_list):\n        values = []\n        current = linked_list.head\n        while current is not None:\n            values.append(current.value)\n            current = current.next\n        return values\n\n    def test_sort_empty_list(self):\n        import exercise\n        ll = exercise.LinkedList(5)\n        ll.head = None\n        ll.tail = None\n        ll.length = 0\n        ll.bubble_sort()\n        self.assertIsNone(ll.head)\n\n    def test_sort_single_element(self):\n        import exercise\n        ll = exercise.LinkedList(5)\n        ll.bubble_sort()\n        self.assertEqual(self.list_to_values(ll), [5])\n\n    def test_sort_already_sorted(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.append(3)\n        ll.bubble_sort()\n        self.assertEqual(self.list_to_values(ll), [1, 2, 3])\n\n    def test_sort_reverse_order(self):\n        import exercise\n        ll = exercise.LinkedList(3)\n        ll.append(2)\n        ll.append(1)\n        ll.bubble_sort()\n        self.assertEqual(self.list_to_values(ll), [1, 2, 3])\n\n    def test_sort_random_order(self):\n        import exercise\n        ll = exercise.LinkedList(2)\n        ll.append(1)\n        ll.append(3)\n        ll.bubble_sort()\n        self.assertEqual(self.list_to_values(ll), [1, 2, 3])\n\n    def test_sort_with_duplicates(self):\n        import exercise\n        ll = exercise.LinkedList(3)\n        ll.append(2)\n        ll.append(2)\n        ll.append(1)\n        ll.append(3)\n        ll.bubble_sort()\n        self.assertEqual(self.list_to_values(ll), [1, 2, 2, 3, 3])\n\n"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \n\nclass LinkedList:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.head = new_node\n        self.tail = new_node\n        self.length = 1\n\n    def print_list(self):\n        temp = self.head\n        while temp is not None:\n            print(temp.value)\n            temp = temp.next\n        \n    def append(self, value):\n        new_node = Node(value)\n        if self.head is None:\n            self.head = new_node\n            self.tail = new_node\n        else:\n            self.tail.next = new_node\n            self.tail = new_node\n        self.length += 1\n\n    def bubble_sort(self):\n        if self.length < 2:\n            return\n        \n        sorted_until = None\n        \n        while sorted_until != self.head.next:\n            current = self.head\n            while current.next != sorted_until:\n                next_node = current.next\n                if current.value > next_node.value:\n                    current.value, next_node.value = next_node.value, current.value\n                current = current.next\n            sorted_until = current\n        \n\n\nmy_linked_list = LinkedList(4)\nmy_linked_list.append(2)\nmy_linked_list.append(6)\nmy_linked_list.append(5)\nmy_linked_list.append(1)\nmy_linked_list.append(3)\n\nprint(\"Linked List Before Sort:\")\nmy_linked_list.print_list()\n\nmy_linked_list.bubble_sort()\n\nprint(\"\\nSorted Linked List:\")\nmy_linked_list.print_list()\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    Linked List Before Sort:\n    4\n    2\n    6\n    5\n    1\n    3\n\n    Sorted Linked List:\n    1\n    2\n    3\n    4\n    5\n    6\n\n\"\"\"\n\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

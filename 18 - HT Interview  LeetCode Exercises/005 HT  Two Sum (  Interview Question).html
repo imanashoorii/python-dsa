@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "005 HT  Two Sum (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p><code><strong>two_sum()</strong></code> <br><br><strong>Problem:</strong> <br>Given an array of integers <code><strong>nums</strong></code> and a target integer <code><strong>target</strong></code>, find the indices of two numbers in the array that add up to the target.<br><br>The main challenge here is to implement this function in one pass through the array. This means you should not iterate over the array more than once. Therefore, your solution should have a time complexity of O(n), where n is the number of elements in <code><strong>nums</strong></code>.</p><p><br></p><p><strong>Input:</strong></p><ul><li><p>A list of integers <code><strong>nums</strong></code> .</p></li><li><p>A target integer <code><strong>target</strong></code>.</p></li></ul><p><br></p><p><strong>Output:</strong></p><ul><li><p>A list of two integers representing the <em>indices</em> of the two numbers in the input array <code><strong>nums</strong></code> that add up to the target. If no two numbers in the input array add up to the target, return an empty list [].</p></li></ul><p><br></p><p><strong>Example:</strong></p><p><br></p><pre class=\"prettyprint linenums\">Input: nums = [5, 1, 7, 2, 9, 3], target = 10\nOutput: [1, 4]\nExplanation: The numbers at indices 1 and 4 in the array add up to the target 10.\n\nInput: nums = [3, 2, 4], target = 6\nOutput: [1, 2]\nExplanation: The numbers at indices 1 and 2 in the array add up to the target 6.\n\nInput: nums = [3, 3], target = 6\nOutput: [0, 1]\nExplanation: The numbers at indices 0 and 1 in the array add up to the target 6.\n\nInput: nums = [2, 1, 2, 7, 11, 15], target = 9\nOutput: [2, 3]\nExplanation: Notice there are two 2s in the array.  The second one will be used.\n\nInput: nums = [1, 2, 3, 4, 5], target = 10\nOutput: []\nExplanation: There are no two numbers in the array add up to the target 10.\n\nInput: nums = [], target = 0\nOutput: []\nExplanation: There are no numbers in the input array, so the function returns an empty list [].</pre><p><br></p><p><br></p><p><br></p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-07-26_16-47-48-8b88fd8b24cd7dc7af9494a1aeaea6b0.png\"><p><br></p><p><br></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestTwoSum(TestCase):\n\n    def test_standard_case(self):\n        import exercise\n        from exercise import two_sum\n        result = two_sum([2, 7, 11, 15], 9)\n        self.assertEqual(set(result), {0, 1})\n\n    def test_no_solution(self):\n        import exercise\n        from exercise import two_sum\n        result = two_sum([2, 7, 11, 15], 50)\n        self.assertEqual(result, [])\n\n    def test_duplicate_numbers(self):\n        import exercise\n        from exercise import two_sum\n        result = two_sum([3, 3], 6)\n        self.assertEqual(set(result), {0, 1})\n\n    def test_same_number_used_twice(self):\n        import exercise\n        from exercise import two_sum\n        result = two_sum([3, 2, 4], 6)\n        self.assertEqual(set(result), {1, 2})\n\n    def test_empty_list(self):\n        import exercise\n        from exercise import two_sum\n        result = two_sum([], 9)\n        self.assertEqual(result, [])\n\n    def test_single_number(self):\n        import exercise\n        from exercise import two_sum\n        result = two_sum([7], 9)\n        self.assertEqual(result, [])\n\n"}], "solutions": [{"file_name": "exercise.py", "content": "def two_sum(nums, target):\n    num_map = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in num_map:\n            return [num_map[complement], i]\n        num_map[num] = i\n    return []\n    \n    \n    \nprint(two_sum([5, 1, 7, 2, 9, 3], 10))  \nprint(two_sum([4, 2, 11, 7, 6, 3], 9))  \nprint(two_sum([10, 15, 5, 2, 8, 1, 7], 12))  \nprint(two_sum([1, 3, 5, 7, 9], 10))  \nprint ( two_sum([1, 2, 3, 4, 5], 10) )\nprint ( two_sum([1, 2, 3, 4, 5], 7) )\nprint ( two_sum([1, 2, 3, 4, 5], 3) )\nprint ( two_sum([], 0) )\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    [1, 4]\n    [1, 3]\n    [0, 3]\n    [1, 3]\n    []\n    [2, 3]\n    [0, 1]\n    []\n\n\"\"\"\n\n\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

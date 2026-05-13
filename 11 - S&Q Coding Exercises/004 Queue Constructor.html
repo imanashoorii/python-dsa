@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "004 Queue Constructor", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Create a Queue class that represents a first-in, first-out (FIFO) data structure using a linked list implementation. <br><br>The Queue class should contain the following components:</p><ol><li><p>A <code><strong>Node</strong></code> class, which serves as the building block for the linked list. The <code><strong>Node</strong></code> class should have an <code><strong>__init__</strong></code> method that initializes the following attributes:</p><ul><li><p><code><strong>value</strong></code>: The value of the node.</p></li><li><p><code><strong>next</strong></code>: A reference to the next node in the list, initialized to None.</p></li></ul></li><li><p>The <code><strong>Queue</strong></code> class should have an <code><strong>__init__</strong></code> method that initializes the queue with a single node, using the given value. The <code><strong>__init__</strong></code> method should perform the following tasks:</p><ul><li><p>Create a new instance of the <code><strong>Node</strong></code> class using the provided value.</p></li><li><p>Set the <code><strong>first</strong></code> attribute of the Queue class to point to the new node.</p></li><li><p>Set the <code><strong>last</strong></code> attribute of the Queue class to point to the new node.</p></li><li><p>Initialize a <code><strong>length</strong></code> attribute for the Queue class, which represents the current number of nodes in the queue, and set it to 1.</p></li></ul></li></ol>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestNode(TestCase):\n    def test_node_value(self):\n        import exercise\n        node = exercise.Node(1)\n        self.assertEqual(node.value, 1)\n\n    def test_node_next(self):\n        import exercise\n        node1 = exercise.Node(1)\n        self.assertIsNone(node1.next)\n        node2 = exercise.Node(2)\n        node1.next = node2\n        self.assertEqual(node1.next, node2)\n\n\nclass TestQueue(TestCase):\n    def test_initialization_of_queue(self):\n        import exercise\n        queue = exercise.Queue(1)\n        self.assertEqual(queue.first.value, 1)\n        self.assertEqual(queue.last.value, 1)\n        self.assertEqual(queue.length, 1)  \n\n    def test_first(self):\n        import exercise\n        queue = exercise.Queue(1)\n        self.assertEqual(queue.first.value, 1)\n\n    def test_last(self):\n        import exercise\n        queue = exercise.Queue(1)\n        self.assertEqual(queue.last.value, 1)\n\n    def test_length(self):\n        import exercise\n        queue = exercise.Queue(1)\n        self.assertEqual(queue.length, 1)  "}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \nclass Queue:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.first = new_node\n        self.last = new_node\n        self.length = 1\n\n\n\n\nmy_queue = Queue(4)\n\nprint('First:', my_queue.first.value)\nprint('Last:', my_queue.last.value)\nprint('Length:', my_queue.length)\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    First: 4\n    Last: 4\n    Length: 1\n\n\"\"\""}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

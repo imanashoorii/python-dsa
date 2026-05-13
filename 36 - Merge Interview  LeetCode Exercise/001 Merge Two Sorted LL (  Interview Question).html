@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "001 Merge Two Sorted LL (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p><strong>Description</strong></p><p>The <code><strong>merge</strong></code> method takes in another <code><strong>LinkedList</strong></code> as an input and merges it with the current <code><strong>LinkedList</strong></code>. <br><br>The elements in both lists are assumed to be in ascending order.<br><br><strong>Parameters</strong></p><ul><li><p><code><strong>other_list</strong></code> (LinkedList): the other <code><strong>LinkedList</strong></code> to merge with the current list</p></li></ul><p><br></p><p><strong>Return Value</strong></p><p>This method does not return a value, but it modifies the current <code><strong>LinkedList</strong></code> to contain the merged list.</p><p><br></p><p><strong>Example:</strong></p><pre class=\"prettyprint linenums\">l1 = LinkedList(1)\nl1.append(3)\nl1.append(5)\nl1.append(7)\n\nl2 = LinkedList(2)\nl2.append(4)\nl2.append(6)\nl2.append(8)\n\nl1.merge(l2)\n\n# The current list (l1) now contains the merged list [1, 2, 3, 4, 5, 6, 7, 8]\n</pre><p><br></p><p><strong>Detailed Steps:</strong></p><p><strong>Initialize Helper Nodes:</strong></p><ul><li><p>Create a \"dummy\" node that acts as a starting point, and give it a value of 0.</p></li><li><p>Create another node called \"current\" and set it to point to this dummy node. We'll use \"current\" to keep track of where we are in the new merged list.</p></li></ul><p><strong>Merge Loop:</strong></p><ul><li><p>This loop will go through each node in both the list we're working on (<code><strong>self.head</strong></code>) and the list we're merging into it (<code><strong>other_head</strong></code>).</p></li><li><p>For each pair of nodes (one from each list), compare their values.</p></li><li><p>Take the node with the smaller value and attach it to the \"current\" node.</p></li><li><p>Move both the \"current\" node and the list head that had the smaller value to their respective next nodes.</p></li></ul><p><strong>Check for Remaining Nodes:</strong></p><ul><li><p>After the loop, it's possible that one list still has nodes while the other doesn't.</p></li><li><p>If that's the case, take the remaining nodes from the list that isn't empty and attach them to \"current\".</p></li></ul><p><strong>Update Head, Tail, and Length:</strong></p><ul><li><p>Once you're done with the merging, the \"dummy\" node will still be at the start. Update the head of the list to point to the node that comes immediately after this dummy node.</p></li><li><p>Also, make sure to update the tail node to be the last node in the new, merged list.</p></li><li><p>Finally, update the length of the list to account for the nodes from both original lists.</p></li></ul><p><br></p><p><br></p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-08_00-08-13-cce046e5e722acd4b552f1c1a9427428.png\"><p><br></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestMergeMethod(TestCase):\n\n    # Helper method to convert linked list to Python list\n    def linked_list_to_list(self, linked_list):\n        result = []\n        current = linked_list.head\n        while current:\n            result.append(current.value)\n            current = current.next\n        return result\n\n    def test_merge_empty_lists(self):\n        import exercise\n        list1 = exercise.LinkedList(1)  # Initialize with dummy value\n        list1.head = None  # Empty the list\n        list1.tail = None\n        list1.length = 0\n        \n        list2 = exercise.LinkedList(1)  # Do the same for list2\n        list2.head = None\n        list2.tail = None\n        list2.length = 0\n\n        list1.merge(list2)\n        self.assertEqual(self.linked_list_to_list(list1), [])  # Merged list should be empty\n\n    def test_merge_with_one_empty_list(self):\n        import exercise\n        list1 = exercise.LinkedList(1)\n        list2 = exercise.LinkedList(2)\n        list2.head = None\n        list2.tail = None\n        list2.length = 0\n        \n        list1.merge(list2)\n        self.assertEqual(self.linked_list_to_list(list1), [1])  # Merged list should have only one value\n\n    def test_merge_lists_of_same_length(self):\n        import exercise\n        list1 = exercise.LinkedList(1)\n        list1.append(2)\n        list1.append(3)\n\n        list2 = exercise.LinkedList(4)\n        list2.append(5)\n        list2.append(6)\n\n        list1.merge(list2)\n        self.assertEqual(self.linked_list_to_list(list1), [1, 2, 3, 4, 5, 6])\n\n    def test_merge_lists_of_different_lengths(self):\n        import exercise\n        list1 = exercise.LinkedList(1)\n        list1.append(3)\n        list1.append(5)\n\n        list2 = exercise.LinkedList(2)\n        list2.append(4)\n\n        list1.merge(list2)\n        self.assertEqual(self.linked_list_to_list(list1), [1, 2, 3, 4, 5])\n\n    def test_merge_lists_with_duplicates(self):\n        import exercise\n        list1 = exercise.LinkedList(1)\n        list1.append(3)\n        list1.append(3)\n\n        list2 = exercise.LinkedList(2)\n        list2.append(5)\n        list2.append(5)\n\n        list1.merge(list2)\n        self.assertEqual(self.linked_list_to_list(list1), [1, 2, 3, 3, 5, 5])\n\n    def test_merge_lists_with_negative_numbers(self):\n        import exercise\n        list1 = exercise.LinkedList(-5)\n        list1.append(-3)\n        list1.append(-1)\n\n        list2 = exercise.LinkedList(-4)\n        list2.append(-2)\n\n        list1.merge(list2)\n        self.assertEqual(self.linked_list_to_list(list1), [-5, -4, -3, -2, -1])\n"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \n\nclass LinkedList:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.head = new_node\n        self.tail = new_node\n        self.length = 1\n\n    def print_list(self):\n        temp = self.head\n        while temp is not None:\n            print(temp.value)\n            temp = temp.next\n        \n    def append(self, value):\n        new_node = Node(value)\n        if self.head is None:\n            self.head = new_node\n            self.tail = new_node\n        else:\n            self.tail.next = new_node\n            self.tail = new_node\n        self.length += 1\n\n\n    def merge(self, other_list):\n        other_head = other_list.head\n        dummy = Node(0)\n        current = dummy\n\n        while self.head is not None and other_head is not None:\n            if self.head.value < other_head.value:\n                current.next = self.head\n                self.head = self.head.next\n            else:\n                current.next = other_head\n                other_head = other_head.next\n            current = current.next\n\n        if self.head is not None:\n            current.next = self.head\n        else:\n            current.next = other_head\n            self.tail = other_list.tail\n\n        self.head = dummy.next\n        self.length += other_list.length\n        \n\n\nl1 = LinkedList(1)\nl1.append(3)\nl1.append(5)\nl1.append(7)\n\n\nl2 = LinkedList(2)\nl2.append(4)\nl2.append(6)\nl2.append(8)\n\nl1.merge(l2)\n\nl1.print_list()\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    1 \n    2 \n    3 \n    4 \n    5 \n    6 \n    7\n    8\n\n\"\"\""}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

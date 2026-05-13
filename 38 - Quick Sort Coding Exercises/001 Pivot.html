@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "001 Pivot", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Write a function called <code><strong>pivot</strong></code> that helps in partitioning a list of integers during the quick sort algorithm. <br><br>The function should perform the following tasks:</p><ol><li><p>Accept three parameters: <code><strong>my_list</strong></code>, which represents the list of integers being sorted; <code><strong>pivot_index</strong></code>, the index of the pivot element; and <code><strong>end_index</strong></code>, the index of the last element in the list.</p></li><li><p>Initialize a variable <code><strong>swap_index</strong></code> to the value of <code><strong>pivot_index</strong></code>.</p></li><li><p>Iterate through the elements of <code><strong>my_list</strong></code> from <code><strong>pivot_index+1</strong></code> to <code><strong>end_index+1</strong></code> (inclusive) using a loop with the variable <code><strong>i</strong></code>.</p></li><li><p>Inside the loop, if the current element <code><strong>my_list[i]</strong></code> is less than the pivot element <code><strong>my_list[pivot_index]</strong></code>, increment <code><strong>swap_index</strong></code> and call the previously implemented <code><strong>swap</strong></code> function to swap the elements at <code><strong>swap_index</strong></code> and <code><strong>i</strong></code>.</p></li><li><p>After the loop, call the <code><strong>swap</strong></code> function to swap the elements at <code><strong>pivot_index</strong></code> and <code><strong>swap_index</strong></code>.</p></li><li><p>Return the updated value of <code><strong>swap_index</strong></code> as the new pivot index.</p></li></ol>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestPivotFunction(TestCase):\n\n    # Helper function to check if a list is partitioned around the pivot\n    def is_partitioned(self, my_list, pivot_index):\n        pivot_val = my_list[pivot_index]\n        # Values to the left should be less than pivot\n        for i in range(0, pivot_index):\n            if my_list[i] >= pivot_val:\n                return False\n        # Values to the right should be greater than or equal to pivot\n        for i in range(pivot_index + 1, len(my_list)):\n            if my_list[i] < pivot_val:\n                return False\n        return True\n\n    def test_simple_pivot(self):\n        import exercise\n        my_list = [3, 2, 1, 4, 5]\n        pivot_index = exercise.pivot(my_list, 0, len(my_list) - 1)\n        self.assertTrue(self.is_partitioned(my_list, pivot_index))\n\n    def test_repeated_values(self):\n        import exercise\n        my_list = [3, 3, 3, 3, 3]\n        pivot_index = exercise.pivot(my_list, 0, len(my_list) - 1)\n        self.assertTrue(self.is_partitioned(my_list, pivot_index))\n\n    def test_negative_numbers(self):\n        import exercise\n        my_list = [-5, -3, -4, -1, -2]\n        pivot_index = exercise.pivot(my_list, 0, len(my_list) - 1)\n        self.assertTrue(self.is_partitioned(my_list, pivot_index))\n\n    def test_pivot_middle(self):\n        import exercise\n        my_list = [1, 3, 5, 2, 4]\n        pivot_index = exercise.pivot(my_list, 2, len(my_list) - 1)\n        self.assertTrue(self.is_partitioned(my_list, pivot_index))\n\n    def test_pivot_end(self):\n        import exercise\n        my_list = [1, 2, 3, 4, 5]\n        pivot_index = exercise.pivot(my_list, 4, len(my_list) - 1)\n        self.assertTrue(self.is_partitioned(my_list, pivot_index))\n\n"}], "solutions": [{"file_name": "exercise.py", "content": "def swap(my_list, index1, index2):\n    temp = my_list[index1]\n    my_list[index1] = my_list[index2]\n    my_list[index2] = temp\n\n\ndef pivot(my_list, pivot_index, end_index):\n    swap_index = pivot_index\n\n    for i in range(pivot_index+1, end_index+1):\n        if my_list[i] < my_list[pivot_index]:\n            swap_index += 1\n            swap(my_list, swap_index, i)\n    swap(my_list, pivot_index, swap_index)\n    return swap_index\n\n\n\n\nmy_list = [4,6,1,7,3,2,5]\n\nprint('List before running pivot():')\nprint(my_list)\n\nreturned_pivot_index = pivot(my_list, 0, 6)\n\nprint('\\nList after running pivot():')\nprint(my_list)\n\nprint('\\nPivot Index:')\nprint(returned_pivot_index)\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    List before running pivot():\n    [4, 6, 1, 7, 3, 2, 5]\n\n    List after running pivot():\n    [2, 1, 3, 4, 6, 7, 5]\n\n    Pivot Index:\n    3\n\n \"\"\""}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

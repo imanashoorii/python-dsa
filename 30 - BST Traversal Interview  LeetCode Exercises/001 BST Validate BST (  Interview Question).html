@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "001 BST Validate BST (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>You are tasked with writing a method called <code><strong>is_valid_bst</strong></code> in the <code><strong>BinarySearchTree</strong></code> class that checks whether a binary search tree is a valid binary search tree. <br><br>Your method should use the <code><strong>dfs_in_order</strong></code> method to get the node values of the binary search tree in ascending order, and then check whether each node value is greater than the previous node value. <br><br>If the node values are not sorted in ascending order, the method should return <code><strong>False</strong></code>, indicating that the binary search tree is not valid. <br><br>If all node values are sorted in ascending order, the method should return <code><strong>True</strong></code>, indicating that the binary search tree is a valid binary search tree.</p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestIsValidBST(TestCase):\n\n    def test_single_element(self):\n        import exercise\n        tree = exercise.BinarySearchTree()\n        tree.insert(5)\n        self.assertTrue(tree.is_valid_bst())\n\n    def test_two_elements_valid(self):\n        import exercise\n        tree = exercise.BinarySearchTree()\n        tree.insert(5)\n        tree.insert(3)\n        self.assertTrue(tree.is_valid_bst())\n\n    def test_two_elements_invalid(self):\n        import exercise\n        tree = exercise.BinarySearchTree()\n        tree.insert(5)\n        tree.root.right = exercise.Node(3)\n        self.assertFalse(tree.is_valid_bst())\n\n    def test_three_elements(self):\n        import exercise\n        tree = exercise.BinarySearchTree()\n        tree.insert(5)\n        tree.insert(3)\n        tree.insert(7)\n        self.assertTrue(tree.is_valid_bst())\n\n    def test_three_elements_invalid(self):\n        import exercise\n        tree = exercise.BinarySearchTree()\n        tree.insert(5)\n        tree.insert(3)\n        tree.root.right = exercise.Node(4)  # Manually setting an invalid right child.\n        self.assertFalse(tree.is_valid_bst())\n\n    def test_multiple_elements(self):\n        import exercise\n        tree = exercise.BinarySearchTree()\n        tree.insert(5)\n        tree.insert(3)\n        tree.insert(7)\n        tree.insert(1)\n        tree.insert(4)\n        tree.insert(6)\n        tree.insert(8)\n        self.assertTrue(tree.is_valid_bst())\n"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.left = None\n        self.right = None\n        \n\nclass BinarySearchTree:\n    def __init__(self):\n        self.root = None\n\n    def insert(self, value):\n        new_node = Node(value)\n        if self.root is None:\n            self.root = new_node\n            return True\n        temp = self.root\n        while (True):\n            if new_node.value == temp.value:\n                return False\n            if new_node.value < temp.value:\n                if temp.left is None:\n                    temp.left = new_node\n                    return True\n                temp = temp.left\n            else: \n                if temp.right is None:\n                    temp.right = new_node\n                    return True\n                temp = temp.right\n\n    def dfs_in_order(self):\n        results = []\n        def traverse(current_node):\n            if current_node.left is not None:\n                traverse(current_node.left)\n            results.append(current_node.value) \n            if current_node.right is not None:\n                traverse(current_node.right)          \n        traverse(self.root)\n        return results\n        \n    def is_valid_bst(self):\n        node_values = self.dfs_in_order()\n        for i in range(1, len(node_values)):\n            if node_values[i] <= node_values[i-1]:\n                return False\n        return True\n\n\n\nmy_tree = BinarySearchTree()\nmy_tree.insert(47)\nmy_tree.insert(21)\nmy_tree.insert(76)\nmy_tree.insert(18)\nmy_tree.insert(27)\nmy_tree.insert(52)\nmy_tree.insert(82)\n\nprint(\"BST is valid:\")\nprint(my_tree.is_valid_bst())\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    True\n\n \"\"\"\n\n                \n\n\n\n "}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

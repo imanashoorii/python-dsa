@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "011 LL Reverse", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Implement the reverse method for the LinkedList class. <br><br>The reverse method should reverse the order of the nodes in the linked list so that the head becomes the tail and the tail becomes the head. <br><br>The method should not create any new nodes or modify the values of the nodes. <br><br>The method should only update the next attribute of each node to point to the previous node in the list.<br><br>Consider the following requirements while implementing the method:</p><ol><li><p>The method should handle edge cases, such as an empty list or a list with a single node.</p></li><li><p>The method should utilize a temporary variable to swap the head and tail attributes of the LinkedList class.</p></li><li><p>The method should use a loop to iterate through the nodes in the list and update the next attribute of each node.</p></li><li><p>The method should not modify the length attribute of the LinkedList class.</p></li></ol><p><br></p><p><br></p><p><br></p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-07-19_01-37-27-79f6ad5654a32d8348c12ab1bff84ba3.png\"><p><br></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestReverseMethod(TestCase):\n\n    def test_reverse_single_element_list(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.reverse()\n\n        self.assertEqual(ll.head.value, 1)\n        self.assertEqual(ll.tail.value, 1)\n        self.assertEqual(ll.length, 1)  # Length should remain 1\n\n    def test_reverse_two_element_list(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.reverse()\n\n        self.assertEqual(ll.head.value, 2)\n        self.assertEqual(ll.tail.value, 1)\n        self.assertEqual(ll.length, 2)  # Length should remain 2\n\n    def test_reverse_multi_element_list(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.append(3)\n        ll.reverse()\n\n        self.assertEqual(ll.head.value, 3)\n        self.assertEqual(ll.tail.value, 1)\n        self.assertEqual(ll.get(1).value, 2)\n        self.assertEqual(ll.length, 3)  # Length should remain 3\n"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \n\nclass LinkedList:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.head = new_node\n        self.tail = new_node\n        self.length = 1\n\n    def print_list(self):\n        temp = self.head\n        while temp is not None:\n            print(temp.value)\n            temp = temp.next\n        \n    def append(self, value):\n        new_node = Node(value)\n        if self.length == 0:\n            self.head = new_node\n            self.tail = new_node\n        else:\n            self.tail.next = new_node\n            self.tail = new_node\n        self.length += 1\n        return True\n\n    def pop(self):\n        if self.length == 0:\n            return None\n        temp = self.head\n        pre = self.head\n        while(temp.next):\n            pre = temp\n            temp = temp.next\n        self.tail = pre\n        self.tail.next = None\n        self.length -= 1\n        if self.length == 0:\n            self.head = None\n            self.tail = None\n        return temp\n\n    def prepend(self, value):\n        new_node = Node(value)\n        if self.length == 0:\n            self.head = new_node\n            self.tail = new_node\n        else:\n            new_node.next = self.head\n            self.head = new_node\n        self.length += 1\n        return True\n\n    def pop_first(self):\n        if self.length == 0:\n            return None\n        temp = self.head\n        self.head = self.head.next\n        temp.next = None\n        self.length -= 1\n        if self.length == 0:\n            self.tail = None\n        return temp\n\n    def get(self, index):\n        if index < 0 or index >= self.length:\n            return None\n        temp = self.head\n        for _ in range(index):\n            temp = temp.next\n        return temp\n        \n    def set_value(self, index, value):\n        temp = self.get(index)\n        if temp:\n            temp.value = value\n            return True\n        return False\n    \n    def insert(self, index, value):\n        if index < 0 or index > self.length:\n            return False\n        if index == 0:\n            return self.prepend(value)\n        if index == self.length:\n            return self.append(value)\n        new_node = Node(value)\n        temp = self.get(index - 1)\n        new_node.next = temp.next\n        temp.next = new_node\n        self.length += 1   \n        return True  \n\n    def remove(self, index):\n        if index < 0 or index >= self.length:\n            return None\n        if index == 0:\n            return self.pop_first()\n        if index == self.length - 1:\n            return self.pop()\n        pre = self.get(index - 1)\n        temp = pre.next\n        pre.next = temp.next\n        temp.next = None\n        self.length -= 1\n        return temp\n\n    def reverse(self):\n        temp = self.head\n        self.head = self.tail\n        self.tail = temp\n        after = temp.next\n        before = None\n        for _ in range(self.length):\n            after = temp.next\n            temp.next = before\n            before = temp\n            temp = after\n  \n\n\n\nmy_linked_list = LinkedList(1)\nmy_linked_list.append(2)\nmy_linked_list.append(3)\nmy_linked_list.append(4)\n\nprint('LL before reverse():')\nmy_linked_list.print_list()\n\nmy_linked_list.reverse()\n\nprint('\\nLL after reverse():')\nmy_linked_list.print_list()\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    LL before reverse():\n    1\n    2\n    3\n    4\n\n    LL after reverse():\n    4\n    3\n    2\n    1\n    \n\"\"\""}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

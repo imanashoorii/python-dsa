@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "003 LL Has Loop (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Write a method called <code><strong>has_loop</strong></code> that is part of the linked list class. <br><br>The method should be able to detect if there is a cycle or loop present in the linked list. <br><br>You are required to use Floyd's cycle-finding algorithm (also known as the \"tortoise and the hare\" algorithm) to detect the loop. <br><br>This algorithm uses two pointers: a slow pointer and a fast pointer. The slow pointer moves one step at a time, while the fast pointer moves two steps at a time. If there is a loop in the linked list, the two pointers will eventually meet at some point. If there is no loop, the fast pointer will reach the end of the list.<br><br>The method should follow these guidelines:</p><p><br></p><ol><li><p>Create two pointers, <code><strong>slow</strong></code> and <code><strong>fast</strong></code>, both initially pointing to the head of the linked list.</p></li><li><p>Traverse the list with the <code><strong>slow</strong></code> pointer moving one step at a time, while the <code><strong>fast</strong></code> pointer moves two steps at a time.</p></li><li><p>If there is a loop in the list, the <code><strong>fast</strong></code> pointer will eventually meet the <code><strong>slow</strong></code> pointer. If this occurs, the method should return <code><strong>True</strong></code>.</p></li><li><p>If the <code><strong>fast</strong></code> pointer reaches the end of the list or encounters a <code><strong>None</strong></code> value, it means there is no loop in the list. In this case, the method should return <code><strong>False</strong></code>.</p></li></ol><p><br></p><p>If your Linked List contains a loop, it indicates a flaw in its implementation. This situation can manifest in several ways:</p><p><br></p><p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-23_16-42-34-1b7d5fde027727870dad175c13232bc8.png\"></p><p><br></p><p><br></p><p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-09-23_16-42-34-94c6db037cd4e8ef109113cd2f66a6a3.png\"></p><p><br></p><p><br></p><p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2024-02-05_17-26-21-194963fe94c09e3c42823633a2898baf.png\"></p><p><br></p><p><br></p><p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-08-14_18-01-54-cc6cb09046976cd4b8efa14f4adbb7a9.png\"></p><p><br></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestHasLoop(TestCase):\n\n    def test_no_nodes(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        for i in range(1):\n            ll.append(i)\n        self.assertFalse(ll.has_loop())\n\n    def test_no_loop(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        for i in range(1, 5):\n            ll.append(i)\n        self.assertFalse(ll.has_loop())\n\n    # def test_has_loop(self):\n    #     import exercise\n    #     ll = exercise.LinkedList(1)\n    #     for i in range(1, 5):\n    #         ll.append(i)\n    #     # Manually create a loop for testing\n    #     ll.tail.next = ll.head.next.next\n    #     self.assertTrue(ll.has_loop())\n\n\n    # Helper function to create a partial loop\n    def createPartialLoop(self, linked_list):\n        linked_list.head.next.next.next.next = linked_list.head.next\n\n    # Test case for has_loop method\n    def test_has_loop(self):\n        import exercise\n        # Create linked list with 8 elements\n        longList = exercise.LinkedList(1)\n        for i in range(2, 9):  # Loop from 2 to 8\n            longList.append(i)\n        \n        # Create a loop in the first half\n        self.createPartialLoop(longList)\n        \n        # Create second half list with no loop\n        secondHalf = exercise.LinkedList(5)\n        for i in range(6, 9):  # Loop from 6 to 8\n            secondHalf.append(i)\n\n        # Check if has_loop returns True for list with a loop\n        self.assertTrue(longList.has_loop())\n\n        # Check if has_loop returns False for list without a loop\n        self.assertFalse(secondHalf.has_loop())"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \nclass LinkedList:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.head = new_node\n        self.tail = new_node\n        self.length = 1\n\n    def append(self, value):\n        new_node = Node(value)\n        if self.length == 0:\n            self.head = new_node\n            self.tail = new_node\n        else:\n            self.tail.next = new_node\n            self.tail = new_node\n        self.length += 1\n        return True\n\n    def has_loop(self):\n        slow = self.head\n        fast = self.head\n        while fast is not None and fast.next is not None:\n            slow = slow.next\n            fast = fast.next.next\n            if slow == fast:\n                return True\n        return False\n\n\n\nmy_linked_list_1 = LinkedList(1)\nmy_linked_list_1.append(2)\nmy_linked_list_1.append(3)\nmy_linked_list_1.append(4)\nmy_linked_list_1.tail.next = my_linked_list_1.head\nprint(my_linked_list_1.has_loop() ) # Returns True\n\n\nmy_linked_list_2 = LinkedList(1)\nmy_linked_list_2.append(2)\nmy_linked_list_2.append(3)\nmy_linked_list_2.append(4)\nprint(my_linked_list_2.has_loop() ) # Returns False\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

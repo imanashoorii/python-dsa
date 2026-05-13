@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "006 LL Remove Duplicates (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>You are given a singly linked list that contains integer values, where some of these values may be duplicated. <br><br><strong>Note: this linked list class does NOT have a </strong><code><strong>tail</strong></code><strong> which will make this method easier to implement.</strong><br><br>Your task is to implement a method called <code><strong>remove_duplicates()</strong></code> within the LinkedList class that removes all duplicate values from the list. <br><br>Your method should not create a new list, but rather modify the existing list in-place, preserving the relative order of the nodes.<br><br>You can implement the <code><strong>remove_duplicates()</strong></code> method in two different ways:</p><p><br></p><ol><li><p>Using a Set - This approach will have a time complexity of O(n), where n is the number of nodes in the linked list. You are allowed to use the provided Set data structure in your implementation.</p></li><li><p>Without using a Set - This approach will have a time complexity of O(n^2), where n is the number of nodes in the linked list. You are not allowed to use any additional data structures for this implementation.</p></li></ol><p><br></p><p>Here is the method signature you need to implement:</p><pre class=\"prettyprint linenums\">def remove_duplicates(self):</pre><p><br></p><p>Example:</p><p>Input:</p><p>LinkedList: 1 -&gt; 2 -&gt; 3 -&gt; 1 -&gt; 4 -&gt; 2 -&gt; 5</p><p>Output:</p><p>LinkedList: 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5</p><p><br></p><p><br></p><p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-05-06_23-39-05-3cd3d4e8cf8b49fe0ed59b3cd1f87670.png\"></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestRemoveDuplicates(TestCase):\n\n    def setUp(self):\n        import exercise\n        self.ll = exercise.LinkedList(5)\n        for i in [8, 8, 3, 10, 2, 3, 10, 2, 4]:\n            self.ll.append(i)\n        # LinkedList is 5 -> 8 -> 8 -> 3 -> 10 -> 2 -> 3 -> 10 -> 2 -> 4\n\n    def test_remove_all_duplicates(self):\n        import exercise\n        self.ll.remove_duplicates()\n        values = []\n        current = self.ll.head\n        while current:\n            self.assertNotIn(current.value, values, f\"Duplicate value {current.value} found!\")\n            values.append(current.value)\n            current = current.next\n\n    def test_empty_list(self):\n        import exercise\n        self.ll = exercise.LinkedList(5)\n        self.ll.head = None\n        self.ll.length = 0\n        self.ll.remove_duplicates()\n        self.assertIsNone(self.ll.head, \"Head should be None for an empty list!\")\n\n    def test_no_duplicates(self):\n        import exercise\n        self.ll = exercise.LinkedList(5)\n        for i in [8, 3, 10, 2, 4]:\n            self.ll.append(i)\n        # LinkedList is 5 -> 8 -> 3 -> 10 -> 2 -> 4\n        self.ll.remove_duplicates()\n        self.assertEqual(self.ll.length, 6, \"No duplicates should mean length remains unchanged!\")\n"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \nclass LinkedList:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.head = new_node\n        self.length = 1\n\n    def append(self, value):\n        new_node = Node(value)\n        if self.length == 0:\n            self.head = new_node\n        else:\n            current = self.head\n            while current.next is not None:\n                current = current.next\n            current.next = new_node\n        self.length += 1\n    \n    def print_list(self):\n        if self.head is None:\n            print(\"empty list\")\n        else:\n            temp = self.head\n            values = []\n            while temp is not None:\n                values.append(str(temp.value))\n                temp = temp.next\n            print(\" -> \".join(values))\n\n    def remove_duplicates(self):\n        values = set()\n        previous = None\n        current = self.head\n        while current:\n            if current.value in values:\n                previous.next = current.next\n                self.length -= 1\n            else:\n                values.add(current.value)\n                previous = current\n            current = current.next\n            \n            \n\n\n#  +=====================================================+\n#  |                                                     |\n#  |          THE TEST CODE BELOW WILL PRINT             |\n#  |              OUTPUT TO \"USER LOGS\"                  |\n#  |                                                     |\n#  |  Use the output to test and troubleshoot your code  |\n#  |                                                     |\n#  +=====================================================+\n\n\ndef test_remove_duplicates(linked_list, expected_values):\n    print(\"Before: \", end=\"\")\n    linked_list.print_list()\n    linked_list.remove_duplicates()\n    print(\"After:  \", end=\"\")\n    linked_list.print_list()\n\n    # Collect values from linked list after removal\n    result_values = []\n    node = linked_list.head\n    while node:\n        result_values.append(node.value)\n        node = node.next\n\n    # Determine if the test passes\n    if result_values == expected_values:\n        print(\"Test PASS\\n\")\n    else:\n        print(\"Test FAIL\\n\")\n\n# Test 1: List with no duplicates\nll = LinkedList(1)\nll.append(2)\nll.append(3)\ntest_remove_duplicates(ll, [1, 2, 3])\n\n# Test 2: List with some duplicates\nll = LinkedList(1)\nll.append(2)\nll.append(1)\nll.append(3)\nll.append(2)\ntest_remove_duplicates(ll, [1, 2, 3])\n\n# Test 3: List with all duplicates\nll = LinkedList(1)\nll.append(1)\nll.append(1)\ntest_remove_duplicates(ll, [1])\n\n# Test 4: List with consecutive duplicates\nll = LinkedList(1)\nll.append(1)\nll.append(2)\nll.append(2)\nll.append(3)\ntest_remove_duplicates(ll, [1, 2, 3])\n\n# Test 5: List with non-consecutive duplicates\nll = LinkedList(1)\nll.append(2)\nll.append(1)\nll.append(3)\nll.append(2)\nll.append(4)\ntest_remove_duplicates(ll, [1, 2, 3, 4])\n\n# Test 6: List with duplicates at the end\nll = LinkedList(1)\nll.append(2)\nll.append(3)\nll.append(3)\ntest_remove_duplicates(ll, [1, 2, 3])\n\n# Test 7: Empty list\nll = LinkedList(None)\nll.head = None  # Directly setting the head to None\nll.length = 0   # Adjusting the length to reflect an empty list\ntest_remove_duplicates(ll, [])\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

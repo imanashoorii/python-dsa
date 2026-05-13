@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "002 Selection Sort of LL (  Interview Question)", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p><strong>Assignment:</strong></p><p>Write a <code><strong>selection_sort()</strong></code> method in the <code><strong>LinkedList</strong></code> class that will sort the elements of a linked list in ascending order using the selection sort algorithm. The method should update the head and tail pointers of the linked list to reflect the new order of the nodes in the list. You can assume that the input linked list will contain only integers. You should not use any additional data structures to sort the linked list.</p><p><br></p><p><strong>Input:</strong></p><p>The LinkedList object containing a linked list with unsorted elements (self).</p><p><br></p><p><strong>Output:</strong></p><p>None. The method sorts the linked list in place.</p><p><br></p><p><strong>Method Description:</strong></p><ul><li><p>If the length of the linked list is less than 2, the method returns and the list is assumed to be already sorted.</p></li><li><p>The selection sort algorithm works by repeatedly finding the smallest element in the unsorted part of the list and swapping it with the first element in the unsorted part of the list.</p></li><li><p>The method starts with the entire linked list being the unsorted part of the list.</p></li><li><p>For each pass through the unsorted part of the list, the method iterates through each element to find the smallest element in the unsorted part of the list. Once the smallest element is found, it is swapped with the first element in the unsorted part of the list.</p></li><li><p>After each pass, the smallest element in the unsorted part of the list will be at the beginning of the unsorted part of the list.</p></li><li><p>The method continues iterating through the unsorted part of the list until the entire list is sorted.</p></li><li><p>After the linked list is fully sorted, the head and tail pointers of the linked list are updated to reflect the new order of the nodes in the list.</p></li></ul><p><br></p><p><strong>Constraints:</strong></p><ul><li><p>The linked list can contain duplicates.</p></li><li><p>The method should be implemented in the LinkedList class.</p></li><li><p>The method should not use any additional data structures to sort the linked list.</p></li></ul>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestLinkedList(TestCase):\n\n    def list_to_values(self, linked_list):\n        values = []\n        current = linked_list.head\n        while current is not None:\n            values.append(current.value)\n            current = current.next\n        return values\n\n    def test_sort_empty_list(self):\n        import exercise\n        ll = exercise.LinkedList(5)\n        ll.head = None\n        ll.tail = None\n        ll.length = 0\n        ll.selection_sort()\n        self.assertIsNone(ll.head)\n\n    def test_sort_single_element(self):\n        import exercise\n        ll = exercise.LinkedList(5)\n        ll.selection_sort()\n        self.assertEqual(self.list_to_values(ll), [5])\n\n    def test_sort_already_sorted(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.append(3)\n        ll.selection_sort()\n        self.assertEqual(self.list_to_values(ll), [1, 2, 3])\n\n    def test_sort_reverse_order(self):\n        import exercise\n        ll = exercise.LinkedList(3)\n        ll.append(2)\n        ll.append(1)\n        ll.selection_sort()\n        self.assertEqual(self.list_to_values(ll), [1, 2, 3])\n\n    def test_sort_random_order(self):\n        import exercise\n        ll = exercise.LinkedList(2)\n        ll.append(1)\n        ll.append(3)\n        ll.selection_sort()\n        self.assertEqual(self.list_to_values(ll), [1, 2, 3])\n\n    def test_sort_with_duplicates(self):\n        import exercise\n        ll = exercise.LinkedList(3)\n        ll.append(2)\n        ll.append(2)\n        ll.append(1)\n        ll.append(3)\n        ll.selection_sort()\n        self.assertEqual(self.list_to_values(ll), [1, 2, 2, 3, 3])\n"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \n\nclass LinkedList:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.head = new_node\n        self.tail = new_node\n        self.length = 1\n\n    def print_list(self):\n        temp = self.head\n        while temp is not None:\n            print(temp.value)\n            temp = temp.next\n        \n    def append(self, value):\n        new_node = Node(value)\n        if self.head is None:\n            self.head = new_node\n            self.tail = new_node\n        else:\n            self.tail.next = new_node\n            self.tail = new_node\n        self.length += 1\n\n    def selection_sort(self):\n        if self.length < 2:\n            return\n        current = self.head\n        while current.next is not None:\n            smallest = current\n            inner_current = current.next\n            while inner_current is not None:\n                if inner_current.value < smallest.value:\n                    smallest = inner_current\n                inner_current = inner_current.next\n            if smallest != current:\n                current.value, smallest.value = smallest.value, current.value        \n            current = current.next\n\n\n\nmy_linked_list = LinkedList(4)\nmy_linked_list.append(2)\nmy_linked_list.append(6)\nmy_linked_list.append(5)\nmy_linked_list.append(1)\nmy_linked_list.append(3)\n\nprint(\"Linked List Before Sort:\")\nmy_linked_list.print_list()\n\nmy_linked_list.selection_sort()\n\nprint(\"\\nSorted Linked List:\")\nmy_linked_list.print_list()\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    Linked List Before Sort:\n    4\n    2\n    6\n    5\n    1\n    3\n\n    Sorted Linked List:\n    1\n    2\n    3\n    4\n    5\n    6\n\n\"\"\"\n\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

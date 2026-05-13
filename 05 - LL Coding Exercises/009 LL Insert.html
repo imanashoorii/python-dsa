@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "009 LL Insert", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Implement the <code><strong>insert</strong></code> method for the LinkedList class. <br><br>Method signature: <code><strong>def insert(self, index, value):</strong></code><br><br>The <code><strong>insert</strong></code> method should take an integer index and a value as parameters and insert a new node with the given value at the specified index in the linked list. <br><br>If the index is out of bounds, the method should return False. If the new node is successfully inserted, the method should return True.<br><br>Keep in mind the following requirements:</p><ol><li><p>The method should handle edge cases, such as inserting a new node at the beginning or end of the list.</p></li><li><p>The method should utilize the <code><strong>prepend</strong></code>, <code><strong>append</strong></code>, and <code><strong>get</strong></code> methods for handling these edge cases.</p></li><li><p>The method should create a new node with the given value and insert it at the specified index.</p></li><li><p>The method should update the <code><strong>next</strong></code> attribute of the previous node to point to the new node.</p></li><li><p>The method should increment the length attribute of the LinkedList class.</p></li><li><p>The method should return True if the new node is successfully inserted.</p></li><li><p>If the index is out of bounds, the method should return False.</p></li></ol><p><br></p><p><br></p><p><br></p><p><img src=\"https://img-c.udemycdn.com/redactor/raw/coding_exercise_instructions/2023-07-19_01-37-33-db074a0d1b5199d9eb1161b2073035c4.png\"></p><p><br></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestInsertMethod(TestCase):\n\n    def test_insert_with_negative_index(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.append(3)\n        result = ll.insert(-1, 10)\n\n        self.assertFalse(result)\n        self.assertEqual(ll.length, 3)  # No change in length\n\n    def test_insert_with_out_of_bound_index(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.append(3)\n        result = ll.insert(4, 10)  # 4 is out of bounds for a list of length 3\n\n        self.assertFalse(result)\n        self.assertEqual(ll.length, 3)  # No change in length\n\n    def test_insert_at_start_of_list(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.append(3)\n        result = ll.insert(0, 10)\n\n        self.assertTrue(result)\n        self.assertEqual(ll.get(0).value, 10)\n\n    def test_insert_in_middle_of_list(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.append(3)\n        result = ll.insert(1, 20)\n\n        self.assertTrue(result)\n        self.assertEqual(ll.get(1).value, 20)\n\n    def test_insert_at_end_of_list(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.append(2)\n        ll.append(3)\n        result = ll.insert(3, 30)  # 3 is at the end of the list with length 3\n\n        self.assertTrue(result)\n        self.assertEqual(ll.get(3).value, 30)\n\n    def test_insert_on_empty_list(self):\n        import exercise\n        ll = exercise.LinkedList(1)\n        ll.pop_first()\n        result = ll.insert(0, 10)\n\n        self.assertTrue(result)\n        self.assertEqual(ll.get(0).value, 10)\n        self.assertEqual(ll.length, 1)  # Length should be 1 now\n"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n        \n\nclass LinkedList:\n    def __init__(self, value):\n        new_node = Node(value)\n        self.head = new_node\n        self.tail = new_node\n        self.length = 1\n\n    def print_list(self):\n        temp = self.head\n        while temp is not None:\n            print(temp.value)\n            temp = temp.next\n        \n    def append(self, value):\n        new_node = Node(value)\n        if self.length == 0:\n            self.head = new_node\n            self.tail = new_node\n        else:\n            self.tail.next = new_node\n            self.tail = new_node\n        self.length += 1\n        return True\n\n    def pop(self):\n        if self.length == 0:\n            return None\n        temp = self.head\n        pre = self.head\n        while(temp.next):\n            pre = temp\n            temp = temp.next\n        self.tail = pre\n        self.tail.next = None\n        self.length -= 1\n        if self.length == 0:\n            self.head = None\n            self.tail = None\n        return temp\n\n    def prepend(self, value):\n        new_node = Node(value)\n        if self.length == 0:\n            self.head = new_node\n            self.tail = new_node\n        else:\n            new_node.next = self.head\n            self.head = new_node\n        self.length += 1\n        return True\n\n    def pop_first(self):\n        if self.length == 0:\n            return None\n        temp = self.head\n        self.head = self.head.next\n        temp.next = None\n        self.length -= 1\n        if self.length == 0:\n            self.tail = None\n        return temp\n\n    def get(self, index):\n        if index < 0 or index >= self.length:\n            return None\n        temp = self.head\n        for _ in range(index):\n            temp = temp.next\n        return temp\n        \n    def set_value(self, index, value):\n        temp = self.get(index)\n        if temp:\n            temp.value = value\n            return True\n        return False\n    \n    def insert(self, index, value):\n        if index < 0 or index > self.length:\n            return False\n        if index == 0:\n            return self.prepend(value)\n        if index == self.length:\n            return self.append(value)\n        new_node = Node(value)\n        temp = self.get(index - 1)\n        new_node.next = temp.next\n        temp.next = new_node\n        self.length += 1   \n        return True  \n  \n\n\n\nmy_linked_list = LinkedList(1)\nmy_linked_list.append(3)\n\n\nprint('LL before insert():')\nmy_linked_list.print_list()\n\n\nmy_linked_list.insert(1,2)\n\nprint('\\nLL after insert(2) in middle:')\nmy_linked_list.print_list()\n\n\nmy_linked_list.insert(0,0)\n\nprint('\\nLL after insert(0) at beginning:')\nmy_linked_list.print_list()\n\n\nmy_linked_list.insert(4,4)\n\nprint('\\nLL after insert(4) at end:')\nmy_linked_list.print_list()\n\n\n\n\"\"\"\n    EXPECTED OUTPUT:\n    ----------------\n    LL before insert():\n    1\n    3\n\n    LL after insert(2) in middle:\n    1\n    2\n    3\n\n    LL after insert(0) at beginning:\n    0\n    1\n    2\n    3\n\n    LL after insert(4) at end:\n    0\n    1\n    2\n    3\n    4\n\n\"\"\""}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

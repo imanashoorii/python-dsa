@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "002 Heap Remove", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>You have been provided with a <code><strong>MaxHeap</strong></code> class that includes the <code><strong>_sink_down</strong></code> method. <br><br><strong>**</strong> We will be writing the <code><strong>_sink_down</strong></code> method in the next exercise so please do not peek at it in this exercise.&nbsp; ;-)<br><br>The class includes a method for initialization, plus helper methods for getting the left child, the right child, and the parent of a node and swapping elements in the heap.<br><br>Your task is to finalize this class by implementing the <code><strong>remove</strong></code> method. <br><br>This method is designed to remove the maximum element from the heap, i.e., the root element, and reorganize the heap so it maintains its max heap property. The max heap property states that for any given node <code><strong>i</strong></code> other than the root, the value of <code><strong>i</strong></code> is at most the value of its parent.<br><br>Here's what your <code><strong>remove</strong></code> method should do in detail:</p><ol><li><p>If the heap is empty, the <code><strong>remove</strong></code> method should return <code><strong>None</strong></code>.</p></li><li><p>If the heap has only one element, the <code><strong>remove</strong></code> method should remove and return this element.</p></li><li><p>If the heap has more than one element, the <code><strong>remove</strong></code> method should remove the root of the heap, place the last element in the heap at the root, and then call the <code><strong>_sink_down</strong></code> method to reorganize the heap, maintaining the max heap property.</p></li></ol><p><br></p><p>Your <code><strong>remove</strong></code> method should be efficient, aiming for a time complexity of O(log n), where n is the number of elements in the heap.<br><br>Remember to consider edge cases where the heap is empty or contains only a few elements. </p><p><br></p><p><br></p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nclass TestRemove(TestCase):\n\n    def test_remove_from_empty_heap(self):\n        import exercise\n        max_heap = exercise.MaxHeap()\n        self.assertIsNone(max_heap.remove())\n\n    def test_remove_single_element(self):\n        import exercise\n        max_heap = exercise.MaxHeap()\n        max_heap.insert(5)\n        self.assertEqual(max_heap.remove(), 5)\n        self.assertEqual(max_heap.heap, [])\n\n    def test_remove_multiple_elements(self):\n        import exercise\n        max_heap = exercise.MaxHeap()\n        values = [5, 10, 15, 20, 25]\n        for value in values:\n            max_heap.insert(value)\n        self.assertEqual(max_heap.remove(), 25)\n        self.assertEqual(max_heap.remove(), 20)\n        self.assertEqual(max_heap.remove(), 15)\n        self.assertEqual(max_heap.heap, [10, 5])\n\n    def test_remove_maintains_heap_property(self):\n        import exercise\n        max_heap = exercise.MaxHeap()\n        values = [5, 12, 3, 11, 9, 6]\n        for value in values:\n            max_heap.insert(value)\n        max_value = max_heap.remove()\n        self.assertEqual(max_value, 12)\n        self.assertTrue(all(max_heap.heap[i] >= max_heap.heap[max_heap._left_child(i)] \n                            if max_heap._left_child(i) < len(max_heap.heap) else True\n                            for i in range(len(max_heap.heap))))\n        self.assertTrue(all(max_heap.heap[i] >= max_heap.heap[max_heap._right_child(i)] \n                            if max_heap._right_child(i) < len(max_heap.heap) else True\n                            for i in range(len(max_heap.heap))))\n\n    def test_remove_until_empty(self):\n        import exercise\n        max_heap = exercise.MaxHeap()\n        values = [1, 2, 3]\n        for value in values:\n            max_heap.insert(value)\n        self.assertEqual(max_heap.remove(), 3)\n        self.assertEqual(max_heap.remove(), 2)\n        self.assertEqual(max_heap.remove(), 1)\n        self.assertIsNone(max_heap.remove())\n\n    def test_remove_negative_values(self):\n        import exercise\n        max_heap = exercise.MaxHeap()\n        values = [-5, -10, -15]\n        for value in values:\n            max_heap.insert(value)\n        self.assertEqual(max_heap.remove(), -5)\n        self.assertEqual(max_heap.heap, [-10, -15])\n\n"}], "solutions": [{"file_name": "exercise.py", "content": "class MaxHeap:\n    def __init__(self):\n        self.heap = []\n\n    def _left_child(self, index):\n        return 2 * index + 1\n\n    def _right_child(self, index):\n        return 2 * index + 2\n\n    def _parent(self, index):\n        return (index - 1) // 2\n\n    def _swap(self, index1, index2):\n        self.heap[index1], self.heap[index2] = self.heap[index2], self.heap[index1]\n\n    def insert(self, value):\n        self.heap.append(value)\n        current = len(self.heap) - 1\n\n        while current > 0 and self.heap[current] > self.heap[self._parent(current)]:\n            self._swap(current, self._parent(current))\n            current = self._parent(current)\n\n    def _sink_down(self, index):\n        max_index = index\n        while True:\n            left_index = self._left_child(index)\n            right_index = self._right_child(index)\n\n            if (left_index < len(self.heap) and \n                    self.heap[left_index] > self.heap[max_index]):\n                max_index = left_index\n\n            if (right_index < len(self.heap) and \n                    self.heap[right_index] > self.heap[max_index]):\n                max_index = right_index\n\n            if max_index != index:\n                self._swap(index, max_index)\n                index = max_index\n            else:\n                return\n                       \n    def remove(self):\n        if len(self.heap) == 0:\n            return None\n\n        if len(self.heap) == 1:\n            return self.heap.pop()\n\n        max_value = self.heap[0]\n        self.heap[0] = self.heap.pop()\n        self._sink_down(0)\n\n        return max_value"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>

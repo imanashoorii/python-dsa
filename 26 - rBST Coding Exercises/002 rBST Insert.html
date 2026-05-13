@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Assignment</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p, ul, ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      .code-snippet {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .code-block {
+        background-color: #fff;
+        color: #b4690e;
+        font-size: 90%;
+      }
+      .black-block {
+        color: #000000;
+      }
+      .italic-text {
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <h1 id="coding-title"></h1>
+    <div>
+      <h2>Instructions</h2>
+      <div id="coding-instructions"></div>
+    </div>
+    <div>
+      <h2>Test(s)</h2>
+      <div id="coding-tests"></div>
+    </div>
+    <div>
+      <h2>Solution(s)</h2>
+      <div id="coding-solutions"></div>
+    </div>
+
+    <script>
+      const quizData = {"title": "002 rBST Insert", "hasInstructions": true, "hasTests": true, "hasSolutions": true, "instructions": "<p>Implement a recursive method called <code><strong>r_insert</strong></code> to insert a value into a binary search tree (BST). The method should maintain the BST property, where the left subtree contains only nodes with values less than the parent node's value, and the right subtree contains only nodes with values greater than the parent node's value. No duplicate values are allowed in the BST.<br><br>The method should have the following signature:</p><p><br></p><pre class=\"prettyprint linenums\">def r_insert(self, value):</pre><p><br></p><p>The method should use a private helper method called <code><strong>__r_insert</strong></code> with the following signature:</p><p><br></p><pre class=\"prettyprint linenums\">def __r_insert(self, current_node, value):</pre><p><br></p><p>The <code><strong>__r_insert</strong></code> method should take the current node and the value to be inserted as arguments. The method should perform the following tasks:</p><p><br></p><ol><li><p>If the current node is <code><strong>None</strong></code>, create a new node with the given value and return it.</p></li><li><p>If the value is less than the current node's value, call the <code><strong>__r_insert</strong></code> method recursively on the left child of the current node.</p></li><li><p>If the value is greater than the current node's value, call the <code><strong>__r_insert</strong></code> method recursively on the right child of the current node.</p></li><li><p>Return the current node.</p></li></ol><p><br></p><p>The <code><strong>r_insert</strong></code> method should perform the following tasks:</p><p><br></p><ol><li><p>If the root of the BST is <code><strong>None</strong></code>, create a new node with the given value and set it as the root.</p></li><li><p>Call the <code><strong>__r_insert</strong></code> helper method with the root and the value as arguments.</p></li></ol><p><br></p><p>The solution should be implemented as a method within the <code><strong>BinarySearchTree</strong></code> class.</p>", "tests": [{"file_name": "evaluate.py", "content": "from unittest import TestCase\n\nimport unittest\n\nclass TestBinarySearchTree(unittest.TestCase):\n    \n    def test_insert_into_empty_tree(self):\n        import exercise\n        bst = exercise.BinarySearchTree()\n        bst.r_insert(5)\n        self.assertEqual(bst.root.value, 5)\n        self.assertIsNone(bst.root.left)\n        self.assertIsNone(bst.root.right)\n\n    def test_insert_ascending_order(self):\n        import exercise\n        bst = exercise.BinarySearchTree()\n        values = [1, 2, 3, 4, 5]\n        for val in values:\n            bst.r_insert(val)\n        \n        # Check tree structure\n        self.assertEqual(bst.root.value, 1)\n        self.assertEqual(bst.root.right.value, 2)\n        self.assertEqual(bst.root.right.right.value, 3)\n        self.assertEqual(bst.root.right.right.right.value, 4)\n        self.assertEqual(bst.root.right.right.right.right.value, 5)\n        \n    def test_insert_descending_order(self):\n        import exercise\n        bst = exercise.BinarySearchTree()\n        values = [5, 4, 3, 2, 1]\n        for val in values:\n            bst.r_insert(val)\n        \n        # Check tree structure\n        self.assertEqual(bst.root.value, 5)\n        self.assertEqual(bst.root.left.value, 4)\n        self.assertEqual(bst.root.left.left.value, 3)\n        self.assertEqual(bst.root.left.left.left.value, 2)\n        self.assertEqual(bst.root.left.left.left.left.value, 1)\n\n    def test_insert_mixed_order(self):\n        import exercise\n        bst = exercise.BinarySearchTree()\n        values = [3, 1, 4, 5, 2]\n        for val in values:\n            bst.r_insert(val)\n        \n        # Check tree structure\n        self.assertEqual(bst.root.value, 3)\n        self.assertEqual(bst.root.left.value, 1)\n        self.assertEqual(bst.root.left.right.value, 2)\n        self.assertEqual(bst.root.right.value, 4)\n        self.assertEqual(bst.root.right.right.value, 5)\n        \n    def test_duplicate_insertions(self):\n        import exercise\n        bst = exercise.BinarySearchTree()\n        values = [3, 3, 3]\n        for val in values:\n            bst.r_insert(val)\n        \n        # Check tree structure\n        self.assertEqual(bst.root.value, 3)\n        self.assertIsNone(bst.root.left)\n        self.assertIsNone(bst.root.right)"}], "solutions": [{"file_name": "exercise.py", "content": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.left = None\n        self.right = None\n        \n\nclass BinarySearchTree:\n    def __init__(self):\n        self.root = None\n                  \n    def __r_insert(self, current_node, value):\n        if current_node == None: \n            return Node(value)   \n        if value < current_node.value:\n            current_node.left = self.__r_insert(current_node.left, value)\n        if value > current_node.value:\n            current_node.right = self.__r_insert(current_node.right, value) \n        return current_node    \n\n    def r_insert(self, value):\n        if self.root == None: \n            self.root = Node(value)\n        self.__r_insert(self.root, value)  \n\n\n\n\n##########################################################   \n##   Test code below will print output to \"User logs\"   ##\n##########################################################\n\ndef check(expect, actual, message):\n    print(message)\n    print(\"EXPECTED:\", expect)\n    print(\"RETURNED:\", actual)\n    print(\"PASS\" if expect == actual else \"FAIL\", \"\\n\")\n\nprint(\"\\n----- Test: Insert into an empty tree -----\\n\")\nbst = BinarySearchTree()\nprint(\"Inserting value:\", 5)\nbst.r_insert(5)\ncheck(5, bst.root.value, \"Root value after inserting 5:\")\ncheck(None, bst.root.left, \"Left child of root:\")\ncheck(None, bst.root.right, \"Right child of root:\")\n\nprint(\"\\n----- Test: Insert values in ascending order -----\\n\")\nbst = BinarySearchTree()\nvalues = [1, 2, 3, 4, 5]\nfor val in values:\n    print(\"Inserting value:\", val)\n    bst.r_insert(val)\n\n# Check tree structure\ncheck(1, bst.root.value, \"Root value:\")\ncheck(2, bst.root.right.value, \"Right child of root:\")\ncheck(3, bst.root.right.right.value, \"Right child of right child of root:\")\ncheck(4, bst.root.right.right.right.value, \"Right child's right child's right child of root:\")\ncheck(5, bst.root.right.right.right.right.value, \"Fourth right child of root:\")\n\nprint(\"\\n----- Test: Insert values in descending order -----\\n\")\nbst = BinarySearchTree()\nvalues = [5, 4, 3, 2, 1]\nfor val in values:\n    print(\"Inserting value:\", val)\n    bst.r_insert(val)\n\n# Check tree structure\ncheck(5, bst.root.value, \"Root value:\")\ncheck(4, bst.root.left.value, \"Left child of root:\")\ncheck(3, bst.root.left.left.value, \"Left child of left child of root:\")\ncheck(2, bst.root.left.left.left.value, \"Left child's left child's left child of root:\")\ncheck(1, bst.root.left.left.left.left.value, \"Fourth left child of root:\")\n\nprint(\"\\n----- Test: Insert values in mixed order -----\\n\")\nbst = BinarySearchTree()\nvalues = [3, 1, 4, 5, 2]\nfor val in values:\n    print(\"Inserting value:\", val)\n    bst.r_insert(val)\n\n# Check tree structure\ncheck(3, bst.root.value, \"Root value:\")\ncheck(1, bst.root.left.value, \"Left child of root:\")\ncheck(2, bst.root.left.right.value, \"Right child of left child of root:\")\ncheck(4, bst.root.right.value, \"Right child of root:\")\ncheck(5, bst.root.right.right.value, \"Right child of right child of root:\")\n\nprint(\"\\n----- Test: Insert duplicate values -----\\n\")\nbst = BinarySearchTree()\nvalues = [3, 3, 3]\nfor val in values:\n    print(\"Inserting value:\", val)\n    bst.r_insert(val)\n\n# Check tree structure\ncheck(3, bst.root.value, \"Root value:\")\ncheck(None, bst.root.left, \"Left child of root:\")\ncheck(None, bst.root.right, \"Right child of root:\")\n"}]};
+
+      function renderCodeList(rootElement, codeList, className, titlePrefix) {
+        for (var i = 0; i < codeList.length; i++) {
+          var elem = codeList[i];
+          var jsElem = document.createElement("div");
+          jsElem.className = className;
+          var jsElemTitle = document.createElement("h3");
+          jsElemTitle.innerHTML = titlePrefix + " " + (i + 1);
+          var jsElemBody = document.createElement("code");
+          jsElemBody.className = "code-block black-block";
+          jsElemBody.innerHTML = "<pre>" + elem.content + "</pre>";
+          jsElem.appendChild(jsElemTitle);
+          jsElem.appendChild(jsElemBody);
+          rootElement.appendChild(jsElem);
+        }
+      }
+      
+      function main() {
+        // display the assignment
+        var codingTitle = document.getElementById("coding-title");
+        codingTitle.innerHTML = quizData.title;
+        
+        var codingInstructions = document.getElementById("coding-instructions");
+        if (quizData.hasInstructions) {
+          codingInstructions.innerHTML = quizData.instructions;
+        } else {
+          codingInstructions.innerHTML = "<span class=\"italic-text\">" + quizData.instructions
+            + "</span>";
+        }
+
+        // display the test(s)
+        var codingTests = document.getElementById("coding-tests");
+        if (!quizData.hasTests) {
+          codingTests.innerHTML = "<span class=\"italic-text\">" + quizData.tests + "</span>";
+        } else {
+          renderCodeList(codingTests, quizData.tests, "coding-test", "Test");
+        }
+        
+
+        // display the solution(s)
+        var codingSolutions = document.getElementById("coding-solutions");
+        if (!quizData.hasSolutions) {
+          codingSolutions.innerHTML = "<span class=\"italic-text\">" + quizData.solutions + "</span>";
+        } else {
+          renderCodeList(codingSolutions, quizData.solutions, "coding-solution", "Solution");
+        }
+      }
+    </script>
+  </body>
+</html>
